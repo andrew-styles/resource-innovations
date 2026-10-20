@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OTPController;
+use App\Http\Controllers\SecretsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,6 +15,9 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/otp', [OTPController::class, 'login'])
+    ->name('otp.login');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -22,6 +27,8 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/secrets', [\App\Http\Controllers\SecretsController::class, 'index'])
+    Route::get('/secrets', [SecretsController::class, 'index'])
         ->name('secrets.index');
+    Route::post('/secrets', [SecretsController::class, 'store'])
+        ->name('secrets.store');
 });
